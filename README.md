@@ -1,6 +1,6 @@
 # OpenGL Boilerplate (wip)
 
-A minimalistic OpenGL boilerplate based on [Learn OpenGL](https://learnopengl.com/)
+A minimalistic OpenGL boilerplate based on [Learn OpenGL](https://learnopengl.com/) and [initGL](https://github.com/aaronmjacobs/InitGL).
 
 Technologies used:
 * GLFW
