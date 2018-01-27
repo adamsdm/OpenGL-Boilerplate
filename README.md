@@ -19,9 +19,9 @@ Clone the repository with `git clone https://github.com/adamsdm/OpenGL-Boilerpla
 * Install using CMAKE GUI
     * Set source location (the top folder where CMakeLists.txt are located)
     * Set build location, preferably into a seperate build folder to keep things nice and clean
+    * Hit Configure
     * Select relevant generator from the dropdown list
-    * Configure
-    * Generate
+    * Hit Generate
 * Open up the ALL_BUILD solution from your build-folder and build it in Visual Studio
 * Set OpenGL-Boilerplate as startup project (right click, select "Set as StartUp Project")
 
