@@ -1,7 +1,6 @@
 # OpenGL Boilerplate
 * GLFW
 * GLM
-* GLEW
 * GLAD
 
 ## Install using CMAKE
