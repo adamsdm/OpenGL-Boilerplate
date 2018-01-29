@@ -30,3 +30,7 @@ Not tested :exclamation:
 
 ### Linux 
 Not tested :exclamation:
+
+# TODO
+* Copy resource files to binary folder in a better way
+* Abstract main class

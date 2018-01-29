@@ -9,6 +9,12 @@ set(SOURCES
     "${SRC_DIR}/main.cpp"
 )
 
+# Resource files (shaders, textures etc.)
+# we don't want to copy if we're building in the source dir
+if (NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR)
+    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
+endif()
+
 # Executable definition and properties
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE "${SRC_DIR}")

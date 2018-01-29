@@ -2,24 +2,31 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <string>
+#include <fstream>
+#include <streambuf>
+#include <sstream>
 
 // Window dimensions
 #define W	800
 #define H	600
 
-const char *vertexShaderSource = "#version 330 core\n"
-	"layout (location = 0) in vec3 aPos;\n"
-	"void main()\n"
-	"{\n"
-	"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-	"}\0";
 
-const char *fragmentShaderSource = "#version 330 core\n"
-	"out vec4 FragColor;\n"
-	"void main()\n"
-	"{\n"
-	"   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-	"}\n\0";
+std::string readToString(std::string fileSource) {
+	std::ifstream inFile;
+	inFile.open(fileSource);
+	if (!inFile) {
+		std::cout << "ERROR::Couldnt open file " << fileSource << std::endl;
+		return nullptr;
+	}
+
+	std::stringstream strStream;
+	strStream << inFile.rdbuf();
+	std::string str = strStream.str();
+
+	return str;
+}
 
 // On resize
 void framebuffer_size_callback(GLFWwindow* window, int width, int height){
@@ -72,12 +79,19 @@ int main() {
 	// ********************************* //
 	// ********* Setup Shaders ********* //
 	// ********************************* //
+
+	std::string vsSource = readToString("resources/vertex.glsl");
+	std::string fsSource = readToString("resources/fragment.glsl");
+
+	const GLchar *vsCharSource = (const GLchar *) vsSource.c_str();
+	const GLchar *fsCharSource = (const GLchar *) fsSource.c_str();
+
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+	glShaderSource(vertexShader, 1, &vsCharSource, NULL);
 	glCompileShader(vertexShader);
 
 	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+	glShaderSource(fragmentShader, 1, &fsCharSource, NULL);
 	glCompileShader(fragmentShader);
 
 	// Control that the shader compiled correctly
@@ -149,11 +163,10 @@ int main() {
 	glBindVertexArray(0);
 
 
-
 	// ********************************* //
 	// *********** Main Loop *********** //
 	// ********************************* //
-	// Main loop
+	
 	while (!glfwWindowShouldClose(window))
 	{
 		// Check for user inputs
