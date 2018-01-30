@@ -1,11 +1,13 @@
 #version 330 core
 out vec4 FragColor;
   
-in vec4 vertexColor; // the input variable from the vertex shader (same name and same type)  
+in vec3 ourColor;
+in vec2 TexCoord;
 
+uniform sampler2D ourTexture;
 uniform float time;
 
 void main()
 {
-    FragColor = 0.5*sin(time)*vertexColor + 0.5;
+    FragColor = texture(ourTexture, TexCoord) * vec4(ourColor, 1.0);  
 }
