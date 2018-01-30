@@ -2,21 +2,27 @@
 cmake_minimum_required(VERSION 3.1)
 project(OpenGL-Boilerplate)
 
+set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source")
+set(EXT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/External")
+
+
 # Source files
-set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(EXT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external")
-set(SOURCES 
+set(PROJECT_SOURCES 
     "${SRC_DIR}/main.cpp"
+    "${SRC_DIR}/Shader.cpp"
+    "${SRC_DIR}/Shader.h"
 )
 
-# Resource files (shaders, textures etc.)
-# we don't want to copy if we're building in the source dir
-if (NOT CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_CURRENT_BINARY_DIR)
-    file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR} )
-endif()
+
 
 # Executable definition and properties
-add_executable(${PROJECT_NAME} ${SOURCES})
+# Shaders
+file(GLOB PROJECT_SHADERS ${CMAKE_CURRENT_SOURCE_DIR}/shaders/*.glsl)
+source_group("Shaders" FILES ${PROJECT_SHADERS})
+
+
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCES}
+                               ${PROJECT_SHADERS})
 target_include_directories(${PROJECT_NAME} PRIVATE "${SRC_DIR}")
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 

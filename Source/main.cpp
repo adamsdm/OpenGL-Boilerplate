@@ -8,6 +8,8 @@
 #include <streambuf>
 #include <sstream>
 
+#include "Shader.h"
+
 // Window dimensions
 #define W	800
 #define H	600
@@ -80,47 +82,7 @@ int main() {
 	// ********* Setup Shaders ********* //
 	// ********************************* //
 
-	std::string vsSource = readToString("resources/vertex.glsl");
-	std::string fsSource = readToString("resources/fragment.glsl");
-
-	const GLchar *vsCharSource = (const GLchar *) vsSource.c_str();
-	const GLchar *fsCharSource = (const GLchar *) fsSource.c_str();
-
-	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vsCharSource, NULL);
-	glCompileShader(vertexShader);
-
-	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fsCharSource, NULL);
-	glCompileShader(fragmentShader);
-
-	// Control that the shader compiled correctly
-	int  success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-	unsigned int shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::LINKING_FAILED\n" << infoLog << std::endl;
-	}
-	glUseProgram(shaderProgram);
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	Shader myShader("../shaders/vertex.glsl", "../shaders/fragment.glsl");
 
 
 	// ********************************** //
@@ -179,11 +141,11 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// draw our first triangle
-		glUseProgram(shaderProgram);
+		myShader.use();
 
 		time = glfwGetTime();
-		int vertexUniformLocation = glGetUniformLocation(shaderProgram, "time");
-		glUniform1f(vertexUniformLocation, time);
+		myShader.setFloat("time", time);
+
 		
 
 		glBindVertexArray(VAO); // seeing as we only have a single VAO there's no need to bind it every time, but we'll do so to keep things a bit more organized
