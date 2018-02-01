@@ -13,6 +13,7 @@
 #include "stb_image.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "Application.h"
 
 
 // Window dimensions
@@ -34,89 +35,25 @@ bool firstMouse = true;
 
 float deltaTime = 0.0f;
 
-// On resize
-void framebuffer_size_callback(GLFWwindow* window, int width, int height){
-	glViewport(0, 0, width, height);
-}
+// GLFW input callbacks
+void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+void processInput(GLFWwindow *window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 
-// Handle inputs
-void processInput(GLFWwindow *window){
-	
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-
-
-	float cameraSpeed = 5.0f * deltaTime;
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		camera.ProcessKeyboard(FORWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		camera.ProcessKeyboard(BACKWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		camera.ProcessKeyboard(LEFT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		camera.ProcessKeyboard(RIGHT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
-		camera.ProcessKeyboard(UP, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-		camera.ProcessKeyboard(DOWN, deltaTime);
-}
-
-void mouse_callback(GLFWwindow* window, double xpos, double ypos)
-{
-	if (firstMouse)
-	{
-		lastX = xpos;
-		lastY = ypos;
-		firstMouse = false;
-	}
-
-	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos;
-	lastX = xpos;
-	lastY = ypos;
-
-	camera.ProcessMouseMovement(xoffset, yoffset);
-}
 
 int main() {
 
-	// Initialize GLFW
-	if (!glfwInit()) {
-		std::cout << "Couldnt initialize GLFW!" << std::endl;
-		return -1;
-	}
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
 	// Create a window
-	GLFWwindow* window = glfwCreateWindow(W, H, "OpenGL-Boilerplate", NULL, NULL);
-	if (window == NULL)
-	{
-		std::cout << "Failed to create GLFW window" << std::endl;
+	GLFWwindow* window = App::initialize(W, H);
+	if (!window) {
 		glfwTerminate();
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
 
-
-	// Initialize GLAD
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
-
-	glViewport(0, 0, W, H);
+	
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetCursorPosCallback(window, mouse_callback);
-
-	// Configure global OpenGL state
-	glEnable(GL_DEPTH_TEST);
 
 	// ********************************* //
 	// ********* Setup Shaders ********* //
@@ -291,4 +228,46 @@ int main() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+}
+void processInput(GLFWwindow *window) {
+
+
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+
+
+	float cameraSpeed = 5.0f * deltaTime;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(RIGHT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+		camera.ProcessKeyboard(UP, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+		camera.ProcessKeyboard(DOWN, deltaTime);
+}
+
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos;
+	lastX = xpos;
+	lastY = ypos;
+
+	camera.ProcessMouseMovement(xoffset, yoffset);
 }
