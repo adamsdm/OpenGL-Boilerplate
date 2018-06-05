@@ -59,7 +59,7 @@ int main() {
 	// ********* Setup Shaders ********* //
 	// ********************************* //
 
-	Shader myShader("../Shaders/vertex.glsl", "../Shaders/fragment.glsl");
+	Shader myShader("../shaders/vertex.glsl", "../shaders/fragment.glsl");
 
 	// ********************************* //
 	// ********* Setup Textures ******** //
@@ -74,7 +74,7 @@ int main() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// load and generate the texture
 	int width, height, nrChannels;
-	unsigned char *data = stbi_load("../Resources/container.jpg", &width, &height, &nrChannels, 0);
+	unsigned char *data = stbi_load("../resources/container.jpg", &width, &height, &nrChannels, 0);
 	if (data)
 	{
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
