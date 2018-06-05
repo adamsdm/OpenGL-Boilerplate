@@ -2,8 +2,8 @@
 cmake_minimum_required(VERSION 3.1)
 project(OpenGL-Boilerplate)
 
-set(SRC_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/Source")
-set(EXT_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/External")
+set(SRC_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/source")
+set(EXT_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/external")
 set(GLM_DIR     "${EXT_DIR}/glm")
 set(GLFW_DIR    "${EXT_DIR}/glfw")
 set(GLAD_DIR    "${EXT_DIR}/glad")
